@@ -82,4 +82,9 @@ public class Sphere implements Blob3D{
     public Vector3 getCenter() {
         return center;
     }
+
+    @Override
+    public void setCenter(Vector3 center) {
+        this.center = center;
+    }
 }

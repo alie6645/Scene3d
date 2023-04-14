@@ -49,4 +49,9 @@ public class Mesh implements Blob3D{
     public Vector3 getCenter() {
         return VectorMath.add(pos, side1);
     }
+
+    @Override
+    public void setCenter(Vector3 center) {
+
+    }
 }

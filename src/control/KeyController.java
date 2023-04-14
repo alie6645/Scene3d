@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 public class KeyController extends KeyAdapter {
     Scene scene;
     ProjectionCamera cam;
+
+    private final double SPEED = 1;
     public KeyController(Scene scene){
         this.scene = scene;
         this.cam = scene.projection;
@@ -18,22 +20,22 @@ public class KeyController extends KeyAdapter {
             System.exit(0);
         }
         if (e.getKeyChar() == 'w') {
-            cam.move(0, 0, 0.2);
+            cam.move(0, 0, SPEED);
         }
         if (e.getKeyChar() == 'a') {
-            cam.move(-0.2, 0, 0);
+            cam.move(-SPEED, 0, 0);
         }
         if (e.getKeyChar() == 's') {
-            cam.move(0, 0, -0.2);
+            cam.move(0, 0, -SPEED);
         }
         if (e.getKeyChar() == 'd') {
-            cam.move(0.2, 0, 0);
+            cam.move(SPEED, 0, 0);
         }
         if (e.getKeyChar() == 'q') {
-            cam.move(0, 0.2, 0);
+            cam.move(0, SPEED, 0);
         }
         if (e.getKeyChar() == 'e'){
-            cam.move(0,-0.2,0);
+            cam.move(0,-SPEED,0);
         }
         scene.repaint();
     }

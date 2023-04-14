@@ -12,4 +12,6 @@ public interface Blob3D {
     public void depthSort(Vector3 cam);
 
     public Vector3 getCenter();
+
+    public void setCenter(Vector3 center);
 }

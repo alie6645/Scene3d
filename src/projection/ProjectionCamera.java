@@ -94,7 +94,8 @@ public class ProjectionCamera {
     public Point2D convert(Vector3 point){
         Vector3 line = VectorMath.subtract(point,camera);
         Vector3 intersection = intersect(line,screen);
-        if (line.magnitude()>50){
+        //having issues with distance, fade not centered
+        if (line.magnitude()>100){
             //return null;
         }
         if (intersection==null){

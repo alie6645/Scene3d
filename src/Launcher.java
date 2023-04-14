@@ -21,7 +21,7 @@ public class Launcher {
         MouseController mouse = new MouseController(scene);
         frame.addMouseMotionListener(mouse);
 
-        Mesh floor = new Mesh(new Vector3(-50,30,20),new Vector3(2,0,0), new Vector3(0,-2,0),100,100);
+        Mesh floor = new Mesh(new Vector3(-50,30,40),new Vector3(2,0,0), new Vector3(0,-2,0),100,100);
 
         Cube cube = new Cube(new Vector3(0,10,4),10);
         Cube cube1 = new Cube(new Vector3(-10,10,-10),10);
@@ -41,14 +41,25 @@ public class Launcher {
         scene.addAmbient(0.3);
 
         MovingBlob ball = new MovingBlob(sphere);
-        ball.setRotate(0.1,0,0);
-        ball.setTranslate(0,0,-1);
+        ball.setRotate(0,0.1,0);
+        ball.setTranslate(-.003,0,0);
+        scene.add(ball);
+
+        MovingBlob tesseract = new MovingBlob(cube);
+        tesseract.setRotate(0.02,0.03,0.01);
+        scene.add(tesseract);
 
         frame.add(scene);
 
-        Timer timer = new Timer(40, new ActionListener() {
+        Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (sphere.getCenter().x<-100){
+                    ball.setTranslate(.003,0,0);
+                }
+                if (sphere.getCenter().x>100){
+                    ball.setTranslate(-.003,0,0);
+                }
                 scene.update();
                 frame.repaint();
             }

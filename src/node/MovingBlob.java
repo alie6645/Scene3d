@@ -15,11 +15,11 @@ public class MovingBlob implements Updatable{
 
     @Override
     public void update() {
-        if (!translate.equals(EMPTY)){
-            BlobTransform.translate(blob, translate.x, translate.y, translate.z);
-        }
         if (!rotate.equals(EMPTY)){
             BlobTransform.rotate(blob, rotate.x, rotate.y, rotate.z);
+        }
+        if (!translate.equals(EMPTY)) {
+            BlobTransform.translate(blob, translate.x, translate.y, translate.z);
         }
     }
 

@@ -53,6 +53,11 @@ public class Cube implements Blob3D {
         return VectorMath.add(pos,new Vector3(length/2,length/2,length/2));
     }
 
+    @Override
+    public void setCenter(Vector3 center) {
+
+    }
+
     public Polygon3D addSquare(Vector3 pos, Vector3 side, Vector3 up){
         Polygon3D poly = new Polygon3D();
         poly.addPoint(pos);

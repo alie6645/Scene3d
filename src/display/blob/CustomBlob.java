@@ -39,4 +39,9 @@ public class CustomBlob implements Blob3D{
     public Vector3 getCenter() {
         return polygons.get(1).getCenter();
     }
+
+    @Override
+    public void setCenter(Vector3 center) {
+
+    }
 }
