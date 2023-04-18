@@ -8,6 +8,7 @@ import java.awt.*;
 
 public interface Blob3D {
     public Color getColor();
+    public void setColor(Color color);
     public List<Polygon3D> getPolygons();
     public void depthSort(Vector3 cam);
 

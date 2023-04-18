@@ -20,20 +20,15 @@ public class Launcher {
         frame.addKeyListener(controller);
         MouseController mouse = new MouseController(scene);
         frame.addMouseMotionListener(mouse);
+        for (int i=0; i<10; i++){
+            Mesh floor = new Mesh(new Vector3(-50 + 20*i,30,40),new Vector3(2,0,0), new Vector3(0,-2,0),10,100);
+            scene.add(floor);
+            floor.setColor((i%2==0)?Color.GREEN:new Color(0,150,0));
+        }
 
-        Mesh floor = new Mesh(new Vector3(-50,30,40),new Vector3(2,0,0), new Vector3(0,-2,0),100,100);
+        Sphere sphere = new Sphere(new Vector3(30,0,30),1);
 
-        Cube cube = new Cube(new Vector3(0,10,4),10);
-        Cube cube1 = new Cube(new Vector3(-10,10,-10),10);
-        Cube cube2 = new Cube(new Vector3(0,10,-14),10);
-
-        Sphere sphere = new Sphere(new Vector3(30,0,30),10);
-
-        scene.add(cube);
-        scene.add(cube1);
-        scene.add(cube2);
         scene.add(sphere);
-        scene.add(floor);
 
         scene.addPointLight(new Vector3(30,0,0),50,0.5);
         scene.addPointLight(new Vector3(50,10,50), 50,0.5);
@@ -42,23 +37,20 @@ public class Launcher {
 
         MovingBlob ball = new MovingBlob(sphere);
         ball.setRotate(0,0.1,0);
-        ball.setTranslate(-.003,0,0);
+        ball.setTranslate(-1,0,0);
         scene.add(ball);
 
-        MovingBlob tesseract = new MovingBlob(cube);
-        tesseract.setRotate(0.02,0.03,0.01);
-        scene.add(tesseract);
 
         frame.add(scene);
 
-        Timer timer = new Timer(10, new ActionListener() {
+        Timer timer = new Timer(0, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (sphere.getCenter().x<-100){
-                    ball.setTranslate(.003,0,0);
+                    ball.setTranslate(1,0,0);
                 }
                 if (sphere.getCenter().x>100){
-                    ball.setTranslate(-.003,0,0);
+                    ball.setTranslate(-1,0,0);
                 }
                 scene.update();
                 frame.repaint();

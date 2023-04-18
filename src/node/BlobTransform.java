@@ -30,8 +30,8 @@ public class BlobTransform {
                 points.add(i,VectorMath.add(points.get(i),new Vector3(x,y,z)));
                 points.remove(i + 1);
             }
-            blob.setCenter(VectorMath.add(blob.getCenter(),new Vector3(x,y,z)));
         }
+        blob.setCenter(VectorMath.add(blob.getCenter(),new Vector3(x,y,z)));
     }
 
 }

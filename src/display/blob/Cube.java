@@ -35,6 +35,11 @@ public class Cube implements Blob3D {
     }
 
     @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @Override
     public List<Polygon3D> getPolygons() {
         return polygons;
     }

@@ -3,7 +3,7 @@ package projection;
 import java.awt.geom.Point2D;
 
 public class ProjectionCamera {
-    public Vector3 camera = new Vector3(10,10,-10);
+    public Vector3 camera = new Vector3(25,-30,-35);
     Plane screen = new Plane(0,0,1,400);
     public Vector3 normal = new Vector3(0,0,1);
     private Vector3 up = new Vector3(0,1,0);

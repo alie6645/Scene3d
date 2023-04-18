@@ -12,6 +12,7 @@ public class Mesh implements Blob3D{
     Vector3 side1;
     Vector3 side2;
     Color color = Color.GREEN;
+    Vector3 center = new Vector3(0,0,1000);
     List<Polygon3D> polygons = new ArrayList<>();
     public Mesh(Vector3 pos, Vector3 side1, Vector3 side2, int width, int length){
         this.pos = pos;
@@ -36,6 +37,11 @@ public class Mesh implements Blob3D{
     }
 
     @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @Override
     public List<Polygon3D> getPolygons() {
         return polygons;
     }
@@ -47,7 +53,7 @@ public class Mesh implements Blob3D{
 
     @Override
     public Vector3 getCenter() {
-        return VectorMath.add(pos, side1);
+        return center;
     }
 
     @Override
