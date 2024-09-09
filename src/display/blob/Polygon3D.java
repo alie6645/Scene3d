@@ -1,5 +1,6 @@
 package display.blob;
 
+import projection.Plane;
 import projection.ProjectionCamera;
 import projection.Vector3;
 import projection.VectorMath;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class Polygon3D {
     private List<Vector3> points = new ArrayList<>();
+    private Color color = Color.GREEN;
 
     public void addPoint(Vector3 point){
         points.add(point);
@@ -51,6 +53,32 @@ public class Polygon3D {
     public Vector3 getCenter(){
         Vector3 vertex = VectorMath.multiply(VectorMath.add(points.get(0),points.get(2)),0.5);
         return vertex;
+    }
+
+    public Polygon3D divide(Plane plane, Vector3 negativePoint){
+        Polygon3D divided = new Polygon3D();
+        Vector3 prev = points.get(points.size()-1);
+        for (int i = 0; i < points.size(); i++){
+            Vector3 current = points.get(i);
+            if (plane.calculate(negativePoint) * plane.calculate(current) < 0)
+                divided.addPoint(current);
+            if (plane.calculate(current) * plane.calculate(prev) < 0) {
+                Vector3 difference = VectorMath.subtract(current, prev);
+                Vector3 intersection = VectorMath.genericIntersect(current, difference, plane);
+                divided.addPoint(intersection);
+            }
+        }
+        if (divided.points.isEmpty())
+            return this;
+        return divided;
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    public void setColor(Color color){
+        this.color = color;
     }
 
     public List<Vector3> getPoints() {

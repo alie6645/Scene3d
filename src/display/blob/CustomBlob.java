@@ -9,21 +9,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CustomBlob implements Blob3D{
-    Color color = Color.GREEN;
     java.util.List<Polygon3D> polygons = new ArrayList<>();
 
     public void addPoly(Polygon3D poly){
         polygons.add(poly);
     }
 
-    @Override
-    public Color getColor() {
-        return color;
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(Color color){
+        for (Polygon3D poly:polygons){
+            poly.setColor(color);
+        }
     }
 
     @Override

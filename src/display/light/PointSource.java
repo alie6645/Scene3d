@@ -29,4 +29,8 @@ public class PointSource implements Light{
             return 0;
         }
     }
+
+    public void move(Vector3 vec){
+        location = VectorMath.add(location, vec);
+    }
 }

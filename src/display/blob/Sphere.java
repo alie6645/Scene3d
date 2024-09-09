@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sphere implements Blob3D{
-    Color color = Color.WHITE;
     Vector3 center;
     double radius;
     List<Polygon3D> polygons = new ArrayList<>();
@@ -64,16 +63,6 @@ public class Sphere implements Blob3D{
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    @Override
     public List<Polygon3D> getPolygons() {
         return polygons;
     }
@@ -91,5 +80,11 @@ public class Sphere implements Blob3D{
     @Override
     public void setCenter(Vector3 center) {
         this.center = center;
+    }
+
+    public void setColor(Color color){
+        for (Polygon3D poly:polygons){
+            poly.setColor(color);
+        }
     }
 }

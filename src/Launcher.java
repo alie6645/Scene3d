@@ -2,7 +2,9 @@ import control.KeyController;
 import control.MouseController;
 import control.Scene;
 import display.blob.*;
+import display.light.PointSource;
 import node.MovingBlob;
+import node.MovingLight;
 import projection.Vector3;
 
 import javax.swing.*;
@@ -15,49 +17,34 @@ public class Launcher {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(new Dimension(800,800));
-        Scene scene = new Scene();
+
+        SceneBuilder builder = new SceneBuilder("src/plains.txt");
+        Scene scene = builder.getScene();
+
+        Sphere sphere = new Sphere(new Vector3(0,-100, 0), 10);
+        for (int i = 0; i < sphere.getPolygons().size(); i++){
+            if (i%2==0)
+                sphere.getPolygons().get(i).setColor(Color.BLACK);
+        }
+        MovingBlob spinning = new MovingBlob(sphere);
+        spinning.setRotate(0,0.1,0);
+        spinning.setTranslate(0,0,1);
+        scene.add(spinning);
+        scene.add(sphere);
+        PointSource pointSource = new PointSource(new Vector3(0,-100,0), 10000);
+        MovingLight light = new MovingLight(pointSource);
+        light.setVelocity(new Vector3(0,0,1));
+        scene.add(light);
+        scene.add(pointSource);
         KeyController controller = new KeyController(scene);
         frame.addKeyListener(controller);
         MouseController mouse = new MouseController(scene);
         frame.addMouseMotionListener(mouse);
-        for (int i=0; i<10; i++){
-            Mesh floor = new Mesh(new Vector3(-50 + 20*i,30,40),new Vector3(2,0,0), new Vector3(0,-2,0),10,100);
-            scene.add(floor);
-            floor.setColor((i%2==0)?Color.GREEN:new Color(0,150,0));
-        }
-
-        Sphere sphere = new Sphere(new Vector3(30,0,30),1);
-
-        scene.add(sphere);
-
-        scene.addPointLight(new Vector3(30,0,0),50,0.5);
-        scene.addPointLight(new Vector3(50,10,50), 50,0.5);
-        scene.addPointLight(new Vector3(-20,-20,-10),100,0.5);
-        scene.addAmbient(0.3);
-
-        MovingBlob ball = new MovingBlob(sphere);
-        ball.setRotate(0,0.1,0);
-        ball.setTranslate(-1,0,0);
-        scene.add(ball);
-
-
         frame.add(scene);
 
-        Timer timer = new Timer(0, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (sphere.getCenter().x<-100){
-                    ball.setTranslate(1,0,0);
-                }
-                if (sphere.getCenter().x>100){
-                    ball.setTranslate(-1,0,0);
-                }
-                scene.update();
-                frame.repaint();
-            }
-        });
-        timer.start();
-
         frame.setVisible(true);
+
+        Timer timer = new Timer(10, (e) -> scene.update());
+        timer.start();
     }
 }

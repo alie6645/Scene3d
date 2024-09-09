@@ -2,7 +2,6 @@ package control;
 
 import projection.ProjectionCamera;
 
-import java.awt.Panel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,7 +11,7 @@ public class MouseController extends MouseAdapter {
     ProjectionCamera cam;
     int lastX;
     int lastY;
-    final double rotate = 0.001;
+    final double sensitivity = 0.002;
     public MouseController(Scene scene) {
         this.scene = scene;
         this.cam = scene.projection;
@@ -37,7 +36,7 @@ public class MouseController extends MouseAdapter {
         }
         double ypart = cam.normal.z;
         double zpart = cam.normal.x;
-        cam.rotateScreen(-rotate * (y-lastY) * ypart,rotate*(x-lastX),zpart*rotate*(y-lastY));
+        cam.rotateScreen(-sensitivity * (y-lastY) * ypart, sensitivity *(x-lastX),zpart* sensitivity *(y-lastY));
         scene.repaint();
         lastX = x;
         lastY = y;

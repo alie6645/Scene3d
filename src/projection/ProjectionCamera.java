@@ -3,8 +3,9 @@ package projection;
 import java.awt.geom.Point2D;
 
 public class ProjectionCamera {
-    public Vector3 camera = new Vector3(25,-30,-35);
-    Plane screen = new Plane(0,0,1,400);
+    final int distance = 1000;
+    public Vector3 camera = new Vector3(0,0,0);
+    public Plane screen = new Plane(0,0,1,distance);
     public Vector3 normal = new Vector3(0,0,1);
     private Vector3 up = new Vector3(0,1,0);
     private Vector3 side = new Vector3(1,0,0);
@@ -22,43 +23,15 @@ public class ProjectionCamera {
         camera = VectorMath.add(camera, VectorMath.multiply(side,x));
         camera = VectorMath.add(camera, VectorMath.multiply(up,y));
         camera = VectorMath.add(camera, VectorMath.multiply(front,z));
+        rotateScreen(0,0,0);
     }
 
-    public Vector3 rotateZ(Vector3 point, double angle){
-        if (angle != 0) {
-            double x = point.x;
-            double y = point.y;
-            return new Vector3(x*Math.cos(angle)-y*Math.sin(angle), x*Math.sin(angle)+y*Math.cos(angle), point.z);
-        } else {
-            return point;
-        }
-    }
-
-    public Vector3 rotateX(Vector3 point, double angle){
-        if (angle != 0) {
-            double z = point.z;
-            double y = point.y;
-            return new Vector3(point.x, y*Math.cos(angle)-z*Math.sin(angle), y*Math.sin(angle)+z*Math.cos(angle));
-        } else {
-            return point;
-        }
-    }
-
-    public Vector3 rotateY(Vector3 point, double angle){
-        if (angle != 0) {
-            double x = point.x;
-            double z = point.z;
-            return new Vector3(x*Math.cos(angle)+z*Math.sin(angle), point.y, z*Math.cos(angle)-x*Math.sin(angle));
-        } else {
-            return point;
-        }
-    }
 
     public Vector3 rotate(Vector3 point, double x, double y, double z){
-        Vector3 result = new Vector3(point);
-        result = rotateX(point, x);
-        result = rotateY(result, y);
-        result = rotateZ(result, z);
+        Vector3 result;
+        result = VectorMath.rotateX(point, x);
+        result = VectorMath.rotateY(result, y);
+        result = VectorMath.rotateZ(result, z);
         return result;
     }
 
@@ -87,7 +60,7 @@ public class ProjectionCamera {
         if (Math.abs(verticalAngle) < 0.8) {
             normal = rotate(normal, x, 0, z);
         }
-        screen.update(normal, normal);
+        screen.update(normal, VectorMath.add(camera,VectorMath.multiply(normal,distance)));
 
     }
 

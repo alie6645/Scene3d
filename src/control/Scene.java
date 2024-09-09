@@ -21,26 +21,31 @@ import java.util.List;
 public class Scene extends JComponent {
 
     ArrayList<Shape3D> shapes = new ArrayList<>();
-    ArrayList<Blob3D> polygons = new ArrayList<>();
+    ArrayList<Polygon3D> polygons = new ArrayList<>();
 
     ArrayList<Updatable> updates = new ArrayList<>();
     ProjectionCamera projection = new ProjectionCamera();
     LightModel lighting = new LightModel();
+    public Vector3 velocity = new Vector3(0,0,0);
 
     public void add(Shape3D shape){
         shapes.add(shape);
     }
 
     public void add(Blob3D blob){
-        polygons.add(blob);
+        polygons.addAll(blob.getPolygons());
+    }
+
+    public void add(Polygon3D poly){
+        polygons.add(poly);
     }
 
     public void add(Updatable updatable){
         updates.add(updatable);
     }
 
-    public void setLight(int index, Light light){
-        lighting.setLight(index, light);
+    public void add(Light light){
+        lighting.addLight(light);
     }
 
     public void addPointLight(Vector3 location, double distance, double brightness){
@@ -51,18 +56,15 @@ public class Scene extends JComponent {
         lighting.addLight(new AmbientSource(intensity));
     }
 
-    public void addDirectionalLight(Vector3 direction){
-        lighting.addLight(new DirectionalSource(direction));
+    public void addDirectionalLight(Vector3 direction, double brightness){
+        lighting.addLight(new DirectionalSource(direction, brightness));
     }
 
     public void sortBlobs(Vector3 cam){
-        polygons.sort(new Comparator<Blob3D>() {
-            @Override
-            public int compare(Blob3D o1, Blob3D o2) {
-                Vector3 vec1 = VectorMath.subtract(o1.getCenter(),cam);
-                Vector3 vec2 = VectorMath.subtract(o2.getCenter(),cam);
-                return (int) (vec2.magnitude() - vec1.magnitude());
-            }
+        polygons.sort((o1, o2) -> {
+            Vector3 vec1 = VectorMath.subtract(o1.getCenter(),cam);
+            Vector3 vec2 = VectorMath.subtract(o2.getCenter(),cam);
+            return Double.compare(vec2.magnitude(), vec1.magnitude());
         });
     }
 
@@ -70,6 +72,13 @@ public class Scene extends JComponent {
         for (Updatable updatable:updates){
             updatable.update();
         }
+        projection.move(velocity.x, velocity.y, velocity.z);
+        if (projection.camera.y > -50) {
+            projection.move(0,-50-projection.camera.y,0);
+        } else {
+            velocity.y+=0.5;
+        }
+        repaint();
     }
 
     @Override
@@ -86,24 +95,11 @@ public class Scene extends JComponent {
             }
         }
         sortBlobs(projection.camera);
-        for (Blob3D blob:polygons){
-            blob.depthSort(projection.camera);
-            Color main = blob.getColor();
-            g2.setColor(blob.getColor());
-            List<Polygon3D> surfaces = blob.getPolygons();
-            for (Polygon3D poly:surfaces){
-                double modifier = lighting.getLighting(poly.getCenter(),poly.getNormal());
-                g2.setColor(ColorModifier.multiply(main,modifier));
-                poly.draw(g2, projection);
-                //g2.setColor(Color.white);
-                //Polygon3D[] highlights = lighting.getSpecular(projection.camera,poly);
-                //for (int i=0; i<lighting.getNumPoints(); i++){
-                //    Polygon3D highlight = highlights[i];
-                //    if (highlight != null && poly.contains(highlight.getCenter())) {
-                //        highlights[i].draw(g2, projection);
-                //    }
-                //}
-            }
+        for (Polygon3D poly:polygons){
+            Color main = poly.getColor();
+            double modifier = lighting.getLighting(poly.getCenter(),poly.getNormal());
+            g2.setColor(ColorModifier.multiply(main,modifier));
+            poly.draw(g2, projection);
         }
     }
 }

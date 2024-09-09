@@ -22,21 +22,22 @@ public class Cube implements Blob3D {
         Vector3 down = new Vector3(0,length,0);
         Vector3 side = new Vector3(length,0,0);
         Vector3 in = new Vector3(0,0,length);
-        Vector3 corner = VectorMath.add(pos,down);
+        Vector3 corner1 = VectorMath.add(pos,down);
+        Vector3 corner2 = VectorMath.add(pos, side);
+        Vector3 corner3 = VectorMath.add(pos, in);
 
         polygons.add(addSquare(pos,down,side));
         polygons.add(addSquare(pos,in,down));
         polygons.add(addSquare(pos,in,side));
-        polygons.add(addSquare(corner,in,side));
-    }
-    @Override
-    public Color getColor() {
-        return color;
+        polygons.add(addSquare(corner1,in,side));
+        polygons.add(addSquare(corner2,in,down));
+        polygons.add(addSquare(corner3,down,side));
     }
 
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(Color color){
+        for (Polygon3D poly:polygons){
+            poly.setColor(color);
+        }
     }
 
     @Override
